@@ -110,9 +110,20 @@ export default {
   data() {
     return {
       coupons: {},
-      tempCoupon: {},
-      due_date: new Date()
+      tempCoupon: {
+        due_date: 0
+      },
+      due_date: new Date(),
+      isNew: false
     };
+  },
+  watch: {
+    due_date() {
+      const vm = this;
+      const timestamp = Math.floor(new Date(vm.due_date) / 1000);
+      console.log(timestamp);
+      vm.tempCoupon.due_date = timestamp;
+    }
   },
   methods: {
     getCoupons(page = 1) {
@@ -126,9 +137,41 @@ export default {
       });
     },
     openCouponModal(isNew, item) {
+      const vm = this;
+      if (isNew) {
+        vm.isNew = true;
+        vm.tempCoupon = {};
+      } else {
+        vm.isNew = false;
+        vm.tempCoupon = Object.assign({}, item);
+        const dateAndTime = new Date(vm.tempCoupon.due_date * 1000)
+          .toISOString()
+          .split("T");
+        vm.due_date = dateAndTime[0];
+      }
       $("#couponModal").modal("show");
     },
-    updateCoupon() {}
+    updateCoupon() {
+      let api = `${process.env.VUE_APP_APIPATH}/api/${
+        process.env.VUE_APP_CUSTOMPATH
+      }/admin/coupon`;
+      const vm = this;
+      let httpMethod = "post";
+      if (!vm.isNew) {
+        httpMethod = "put";
+        api = `${process.env.VUE_APP_APIPATH}/api/${
+          process.env.VUE_APP_CUSTOMPATH
+        }/admin/coupon/${vm.tempCoupon.id}`;
+      }
+      console.log(vm.tempCoupon.due_date);
+      vm.due_date = new Date(vm.tempCoupon.due_date * 1000);
+      console.log(vm.tempCoupon.due_date);
+      this.$http[httpMethod](api, { data: vm.tempCoupon }).then(response => {
+        console.log(response.data);
+        $("#couponModal").modal("hide");
+        vm.getCoupons();
+      });
+    }
   },
   created() {
     this.getCoupons();
