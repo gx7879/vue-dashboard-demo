@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div class="my-5 row justify-content-center" v-if="cart.carts.length>0">
+    <div class="my-5 row justify-content-center" v-if="cart.carts && cart.carts.length">
       <div class="col-md-6">
         <table class="table">
           <thead>
@@ -136,18 +136,18 @@
         </div>
       </div>
     </div>
-    <!-- <div class="my-5 row justify-content-center">
+    <div class="my-5 row justify-content-center">
       <form class="col-md-6" @submit.prevent="createOrder">
         <div class="form-group">
           <label for="useremail">Email</label>
           <input
             type="email"
             class="form-control"
+            :class="{'is-invalid': errors.has('email')}"
             name="email"
             id="useremail"
-            v-validate="'required|email'"
-            :class="{'is-invalid': errors.has('email')}"
             v-model="form.user.email"
+            v-validate="'required|email'"
             placeholder="請輸入 Email"
           >
           <span class="text-danger" v-if="errors.has('email')">{{ errors.first('email') }}</span>
@@ -158,9 +158,9 @@
           <input
             type="text"
             class="form-control"
+            :class="{'is-invalid': errors.has('name')}"
             name="name"
             id="username"
-            :class="{'is-invalid': errors.has('name')}"
             v-model="form.user.name"
             v-validate="'required'"
             placeholder="輸入姓名"
@@ -173,10 +173,14 @@
           <input
             type="tel"
             class="form-control"
+            :class="{'is-invalid': errors.has('tel')}"
+            name="tel"
             id="usertel"
             v-model="form.user.tel"
+            v-validate="{required:true, regex: /^([0-9]+)$/}"
             placeholder="請輸入電話"
           >
+          <span class="text-danger" v-if="errors.has('tel')">{{ errors.first('tel') }}</span>
         </div>
 
         <div class="form-group">
@@ -184,8 +188,8 @@
           <input
             type="address"
             class="form-control"
-            name="address"
             :class="{'is-invalid': errors.has('address')}"
+            name="address"
             id="useraddress"
             v-model="form.user.address"
             v-validate="'required'"
@@ -202,7 +206,7 @@
           <button class="btn btn-danger">送出訂單</button>
         </div>
       </form>
-    </div>-->
+    </div>
   </div>
 </template>
 
@@ -216,6 +220,15 @@ export default {
       products: [],
       product: {},
       cart: {},
+      form: {
+        user: {
+          name: "",
+          email: "",
+          tel: "",
+          address: ""
+        },
+        message: ""
+      },
       status: {
         loadingItem: ""
       },
@@ -298,7 +311,29 @@ export default {
       };
       this.$http.post(api, { data: coupon }).then(response => {
         console.log(response.data);
-        // vm.cart = response.data.data;
+        if (response.data.success) {
+          vm.getCart();
+        } else {
+          vm.$bus.$emit("message:push", response.data.message, "danger");
+        }
+      });
+    },
+    createOrder() {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${
+        process.env.VUE_APP_CUSTOMPATH
+      }/order`;
+      const vm = this;
+      this.$validator.validate().then(result => {
+        if (result) {
+          this.$http.post(api, { data: vm.form }).then(response => {
+            console.log(response.data);
+            if (response.data.success) {
+              vm.$router.push(`/customer_checkout/${response.data.orderId}`);
+            }
+          });
+        } else {
+          vm.$bus.$emit("message:push", "欄位不完整", "danger");
+        }
       });
     }
   },

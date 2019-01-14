@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-right">
-      <button class="btn btn-primary" @click="openCouponModal(true)">建立新的優惠券</button>
+      <button class="btn btn-primary" @click="openCouponModal('couponModal',true)">建立新的優惠券</button>
     </div>
     <table class="table mt-4">
       <thead>
@@ -23,7 +23,16 @@
             <span v-else class="text-muted">未起用</span>
           </td>
           <td>
-            <button class="btn btn-outline-primary btn-sm" @click="openCouponModal(false, item)">編輯</button>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button
+                class="btn btn-outline-primary btn-sm"
+                @click="openCouponModal('couponModal',false, item)"
+              >編輯</button>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                @click="openCouponModal('delCouponModal',false, item)"
+              >刪除</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -100,6 +109,35 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="delCouponModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content border-0">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <span>刪除優惠券</span>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            是否刪除
+            <strong class="text-danger">{{ tempCoupon.title }}</strong> 優惠券(刪除後將無法恢復)。
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-danger" @click="deleteCoupon">確認刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -136,7 +174,7 @@ export default {
         vm.coupons = response.data.coupons;
       });
     },
-    openCouponModal(isNew, item) {
+    openCouponModal(el, isNew, item) {
       const vm = this;
       if (isNew) {
         vm.isNew = true;
@@ -149,7 +187,7 @@ export default {
           .split("T");
         vm.due_date = dateAndTime[0];
       }
-      $("#couponModal").modal("show");
+      $(`#${el}`).modal("show");
     },
     updateCoupon() {
       let api = `${process.env.VUE_APP_APIPATH}/api/${
@@ -169,6 +207,17 @@ export default {
       this.$http[httpMethod](api, { data: vm.tempCoupon }).then(response => {
         console.log(response.data);
         $("#couponModal").modal("hide");
+        vm.getCoupons();
+      });
+    },
+    deleteCoupon() {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${
+        process.env.VUE_APP_CUSTOMPATH
+      }/admin/coupon/${this.tempCoupon.id}`;
+      const vm = this;
+      this.$http.delete(api).then(response => {
+        console.log(response.data);
+        $("#delCouponModal").modal("hide");
         vm.getCoupons();
       });
     }

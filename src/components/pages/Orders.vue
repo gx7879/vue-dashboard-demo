@@ -12,7 +12,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="orders.length" :class="{'text-secondary': !item.is_paid}">
+        <tr
+          v-if="orders.length"
+          v-for="(item,key) in sortOrder"
+          :key="key"
+          :class="{'text-secondary': !item.is_paid}"
+        >
           <td>{{ item.create_at | date }}</td>
           <td>
             <span v-text="item.user.email" v-if="item.user"></span>
@@ -44,7 +49,6 @@ export default {
     return {
       orders: {},
       isLoading: false,
-      isNew: false,
       pagination: {}
     };
   },
@@ -64,6 +68,20 @@ export default {
         vm.orders = response.data.orders;
         vm.pagination = response.data.pagination;
       });
+    }
+  },
+  computed: {
+    sortOrder() {
+      const vm = this;
+      let newOrder = [];
+      if (vm.orders.length) {
+        newOrder = vm.orders.sort((a, b) => {
+          const aIsPaid = a.is_paid ? 1 : 0;
+          const bIsPaid = b.is_paid ? 1 : 0;
+          return aIsPaid - bIsPaid;
+        });
+      }
+      return newOrder;
     }
   },
   created() {

@@ -67,6 +67,10 @@ export default new Router({
         path: 'customer_order',
         name: 'CustomerOrder',
         component: () => import('@/components/pages/CustomerOrders'),
+      }, {
+        path: 'customer_checkout/:orderId',
+        name: 'CustomerCheckout',
+        component: () => import('@/components/pages/CustomerCheckout'),
       }]
     }
   ]
