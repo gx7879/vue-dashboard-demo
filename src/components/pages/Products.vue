@@ -4,7 +4,7 @@
     <div class="text-right mt-4">
       <button class="btn btn-primary" @click="openModal('productModal',true)">建立新的產品</button>
     </div>
-    <table class="table mt-4">
+    <table class="table mt-4 text-white">
       <thead>
         <tr>
           <th width="120">分類</th>
@@ -277,6 +277,7 @@ export default {
       }/admin/product`;
       let httpMethod = "post";
       const vm = this;
+      const currentPage = vm.pagination.current_page;
       if (!vm.isNew) {
         api = `${process.env.VUE_APP_APIPATH}/api/${
           process.env.VUE_APP_CUSTOMPATH
@@ -284,13 +285,12 @@ export default {
         httpMethod = "put";
       }
       this.$http[httpMethod](api, { data: vm.tempProduct }).then(response => {
-        console.log(response.data);
         if (response.data.success) {
           $("#productModal").modal("hide");
-          vm.getProducts();
+          vm.getProducts(currentPage);
         } else {
           $("#productModal").modal("hide");
-          vm.getProducts();
+          vm.getProducts(currentPage);
           console.log("新增失敗");
         }
       });

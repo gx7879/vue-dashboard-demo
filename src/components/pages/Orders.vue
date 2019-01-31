@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loading :active.sync="isLoading"></Loading>
-    <table class="table mt-4">
+    <table class="table mt-4 text-white" v-if="orders.length">
       <thead>
         <tr>
           <th>購買時間</th>
@@ -12,12 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-if="orders.length"
-          v-for="(item,key) in sortOrder"
-          :key="key"
-          :class="{'text-secondary': !item.is_paid}"
-        >
+        <tr v-for="(item,key) in sortOrder" :key="key" :class="{'text-secondary': !item.is_paid}">
           <td>{{ item.create_at | date }}</td>
           <td>
             <span v-text="item.user.email" v-if="item.user"></span>

@@ -1,21 +1,54 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Dashboard from '@/components/Dashboard'
-// import Home from './views/Home.vue'
+import Home from './views/Home.vue'
 
 Vue.use(Router)
 
 export default new Router({
+  linkExactActiveClass: 'active',
   routes: [{
       path: '*',
       redirect: 'login'
     },
-    // {
-    //   path: '/',
-    //   name: 'home',
-    //   component: Home,
-    //   meta: { requireAuth: true }
-    // },
+    {
+      path: '/',
+      name: 'home',
+      components: {
+        default: Home,
+        header: () => import('@/components/Fixheader')
+      },
+      children: []
+    },
+    {
+      path: '/movieinfo/:movieId',
+      name: 'Movieinfo',
+      components: {
+        default: () => import('@/components/pages/Movieinfo'),
+        header: () => import('@/components/Fixheader')
+      }
+    },
+    {
+      path: '/favorites',
+      name: 'Favorite',
+      components: {
+        default: () => import('@/components/pages/Favorites'),
+        header: () => import('@/components/Fixheader')
+      }
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      components: {
+        default: () => import('@/components/pages/Cart'),
+        header: () => import('@/components/Fixheader')
+      },
+      children: [{
+        path: 'checkout',
+        name: 'Checkout',
+        component: () => import('@/components/pages/Checkout')
+      }]
+    },
     {
       path: '/about',
       name: 'about',
@@ -60,7 +93,7 @@ export default new Router({
       ]
     },
     {
-      path: '/',
+      path: '/simulation',
       name: 'dashboard',
       component: Dashboard,
       children: [{
