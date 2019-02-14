@@ -7,6 +7,7 @@
         type="text"
         placeholder="Search"
         aria-label="Search"
+        v-if="routeName"
         v-model="search_video"
       >
       <ul class="navbar-nav px-3">
@@ -28,6 +29,9 @@ export default {
       set(value) {
         this.$store.commit("UPDATEVALUE", value);
       }
+    },
+    routeName() {
+      return this.$route.name == "Product";
     }
   },
   methods: {
