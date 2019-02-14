@@ -4,8 +4,19 @@
     <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
       <swiper-slide v-for="(item,index) in imagesData" :key="index">
         <div
-          :style="{backgroundImage: `url(${item})`, backgroundSize: 'cover', backgroundPosition:'center', height: '100%'}"
-        ></div>
+          class="overflow-hidden"
+          :style="{backgroundImage: `url(${item.pic})`, backgroundSize: 'cover', backgroundPosition:'center', height: '100%'}"
+        >
+          <div class="container mt-110 text-white p-5">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tag mb-2">{{ item.category }}</div>
+                <h1 class="display-4">{{ item.title }}</h1>
+                <div class="description">{{ item.des | beautySub(50) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </swiper-slide>
       <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
       <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
@@ -14,7 +25,7 @@
     <swiper :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
       <swiper-slide v-for="(item,index) in imagesData" :key="index">
         <div
-          :style="{backgroundImage: `url(${item})`,backgroundSize: 'cover', backgroundPosition:'center', height: '100%'}"
+          :style="{backgroundImage: `url(${item.pic})`,backgroundSize: 'cover', backgroundPosition:'center', height: '100%'}"
         ></div>
       </swiper-slide>
     </swiper>
@@ -77,6 +88,21 @@ export default {
   opacity: 0.4;
 }
 .gallery-thumbs .swiper-slide-active {
+  opacity: 1;
+}
+.tag {
+  background-color: #fff;
+  color: #000;
+  display: inline-block;
+  padding: 0px 6px;
+}
+.description {
+  max-width: 400px;
+  font-size: 1rem;
+  opacity: 0;
+  transition: all 0.2s ease 0.5s;
+}
+.swiper-slide-active .description {
   opacity: 1;
 }
 </style>

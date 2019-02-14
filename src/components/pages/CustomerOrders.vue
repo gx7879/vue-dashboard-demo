@@ -2,17 +2,15 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <div class="row mt-4">
-      <div class="col-md-4 mb-4" v-for="item in products" :key="item.id">
+      <div class="col-md-3 mb-4" v-for="item in products" :key="item.id">
         <div class="card border-0 shadow-sm">
           <div
-            style="height: 150px; background-size: cover; background-position: center"
+            style="padding-bottom: 142.1%; background-size: cover; background-position: center"
             :style="{backgroundImage: `url(${item.imageUrl})`}"
           ></div>
           <div class="card-body">
             <span class="badge badge-secondary float-right ml-2">{{ item.category }}</span>
-            <h5 class="card-title">
-              <a href="#" class="text-dark">{{ item.title }}</a>
-            </h5>
+            <h5 class="card-title text-dark">{{ item.title | beautySub(5) }}</h5>
             <p class="card-text">{{ item.content }}</p>
             <div class="d-flex justify-content-between align-items-baseline">
               <div class="h5" v-if="!item.price">{{ item.origin_price }} 元</div>
@@ -136,7 +134,7 @@
         </div>
       </div>
     </div>
-    <div class="my-5 row justify-content-center">
+    <div class="my-5 row justify-content-center" v-if="cart.carts && cart.carts.length">
       <form class="col-md-6" @submit.prevent="createOrder">
         <div class="form-group">
           <label for="useremail">Email</label>

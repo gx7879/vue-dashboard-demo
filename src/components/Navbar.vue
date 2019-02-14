@@ -7,6 +7,7 @@
         type="text"
         placeholder="Search"
         aria-label="Search"
+        v-model="search_video"
       >
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
@@ -19,6 +20,16 @@
 
 <script>
 export default {
+  computed: {
+    search_video: {
+      get() {
+        return this.$store.state.search_video;
+      },
+      set(value) {
+        this.$store.commit("UPDATEVALUE", value);
+      }
+    }
+  },
   methods: {
     signout() {
       const api = `${process.env.VUE_APP_APIPATH}/logout`;

@@ -42,12 +42,16 @@ export default new Router({
       components: {
         default: () => import('@/components/pages/Cart'),
         header: () => import('@/components/Fixheader')
-      },
-      children: [{
-        path: 'checkout',
-        name: 'Checkout',
-        component: () => import('@/components/pages/Checkout')
-      }]
+      }
+    },
+    {
+      path: '/check_out_payment/:orderId',
+      name: 'CheckOutPayment',
+      components: {
+        default: () => import('@/components/pages/Checkoutpayment'),
+        header: () => import('@/components/Fixheader')
+      }
+
     },
     {
       path: '/about',

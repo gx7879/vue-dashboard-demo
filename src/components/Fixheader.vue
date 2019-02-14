@@ -48,6 +48,7 @@
                   class="dropdown-menu dropdown-menu-right p-3"
                   style="min-width: 300px"
                   data-offset="400"
+                  v-if="cart.carts.length"
                 >
                   <h6>已選擇商品</h6>
                   <table class="table table-sm" v-if="cart.carts.length">
@@ -72,6 +73,12 @@
                     <i class="fa fa-cart-plus" aria-hidden="true"></i> 結帳去
                   </button>
                 </div>
+                <div
+                  class="dropdown-menu dropdown-menu-right p-3"
+                  style="min-width: 300px"
+                  data-offset="400"
+                  v-else
+                >目前購物車空無一物</div>
               </div>
             </li>
           </ul>
@@ -96,7 +103,7 @@ export default {
       this.$store.dispatch("removeCart", id);
     },
     checkOutOrders() {
-      this.$router.push("/cart/checkout");
+      this.$router.push("/cart");
     }
   }
 };

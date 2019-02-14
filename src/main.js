@@ -17,6 +17,7 @@ import store from './store'
 import './bus'
 import currencyFilter from './filters/currency'
 import dateFilter from './filters/date'
+import beautysub from './filters/beautysub';
 
 Vue.config.productionTip = false
 
@@ -28,6 +29,7 @@ VeeValidate.Validator.localize('zh_TW', zhTWValidate)
 Vue.component('Loading', Loading);
 Vue.filter('currency', currencyFilter);
 Vue.filter('date', dateFilter)
+Vue.filter('beautySub', beautysub)
 axios.defaults.withCredentials = true;
 
 
@@ -49,7 +51,6 @@ router.beforeEach((to, from, next) => { // 換頁前檢查驗證
         // vm.$router.push('/');
         next();
       } else { // 未登錄返回登錄頁面
-        console.log("112233")
         next({
           path: "/login"
         });

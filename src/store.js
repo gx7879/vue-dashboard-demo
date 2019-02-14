@@ -13,7 +13,11 @@ export default new Vuex.Store({
       carts: {}
     },
     attentionArr: [],
-    attentionData: []
+    attentionData: [],
+    status: {
+      loadingItem: ""
+    },
+    search_video: ''
   },
   mutations: {
     // payload
@@ -46,6 +50,12 @@ export default new Vuex.Store({
     },
     ATTENTIONDATA(state, payload) {
       state.attentionData = payload
+    },
+    LOADINGITEM(state, payload) {
+      state.status.loadingItem = payload
+    },
+    UPDATEVALUE(state, payload) {
+      state.search_video = payload
     }
   },
   actions: {
@@ -83,7 +93,7 @@ export default new Vuex.Store({
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
       }/cart`;
-      context.commit('LOADING', true)
+      context.commit('LOADINGITEM', itemId)
       const cartItem = {
         product_id: itemId,
         qty
@@ -93,7 +103,7 @@ export default new Vuex.Store({
       }).then(response => {
         console.log(response.data);
         context.dispatch('getCart')
-        context.commit('LOADING', false)
+        context.commit('LOADINGITEM', '')
       });
     },
     addAttention(context, {

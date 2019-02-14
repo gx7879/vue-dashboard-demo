@@ -12,14 +12,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item,key) in sortOrder" :key="key" :class="{'text-secondary': !item.is_paid}">
+        <tr v-for="(item,key) in sortOrder" :key="key" :class="{'text-danger': !item.is_paid}">
           <td>{{ item.create_at | date }}</td>
           <td>
             <span v-text="item.user.email" v-if="item.user"></span>
           </td>
           <td>
             <ul class="list-unstyled">
-              <li v-for="(product, i) in item.products" :key="i">
+              <li v-for="(product, index) in item.products" :key="index">
                 {{ product.product.title }} 數量：{{ product.qty }}
                 {{ product.product.unit }}
               </li>

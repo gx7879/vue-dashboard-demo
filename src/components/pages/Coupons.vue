@@ -3,7 +3,7 @@
     <div class="text-right">
       <button class="btn btn-primary" @click="openCouponModal('couponModal',true)">建立新的優惠券</button>
     </div>
-    <table class="table mt-4">
+    <table class="table mt-4 text-white">
       <thead>
         <tr>
           <th>名稱</th>
@@ -48,7 +48,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{ modal_title }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -152,7 +152,8 @@ export default {
         due_date: 0
       },
       due_date: new Date(),
-      isNew: false
+      isNew: false,
+      modal_title: ""
     };
   },
   watch: {
@@ -179,6 +180,7 @@ export default {
       if (isNew) {
         vm.isNew = true;
         vm.tempCoupon = {};
+        vm.modal_title = "新增內容";
       } else {
         vm.isNew = false;
         vm.tempCoupon = Object.assign({}, item);
@@ -186,6 +188,7 @@ export default {
           .toISOString()
           .split("T");
         vm.due_date = dateAndTime[0];
+        vm.modal_title = "編輯內容";
       }
       $(`#${el}`).modal("show");
     },

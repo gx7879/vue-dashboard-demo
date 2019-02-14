@@ -2,7 +2,7 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <div class="text-right mt-4">
-      <button class="btn btn-primary" @click="openModal('productModal',true)">建立新的產品</button>
+      <button class="btn btn-light" @click="openModal('productModal',true)">建立新的產品</button>
     </div>
     <table class="table mt-4 text-white">
       <thead>
@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in products" :key="item.id">
+        <tr v-for="item in filter_product" :key="item.id">
           <td>{{ item.category }}</td>
           <td>{{ item.title }}</td>
           <td class="text-right">{{ item.origin_price | currency }}</td>
@@ -54,7 +54,7 @@
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5 class="modal-title" id="exampleModalLabel">
-              <span>新增產品</span>
+              <span>{{ modal_title }}</span>
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -241,11 +241,27 @@ export default {
       isLoading: false,
       status: {
         fileUploading: false
-      }
+      },
+      modal_title: ""
     };
   },
   components: {
     Pagination
+  },
+  computed: {
+    search_video() {
+      return this.$store.state.search_video;
+    },
+    filter_product() {
+      const searchVal = this.$store.state.search_video;
+      if (!searchVal) {
+        return this.products;
+      } else {
+        return this.products.filter(function(item) {
+          return item.title.indexOf(searchVal) > -1;
+        });
+      }
+    }
   },
   methods: {
     getProducts(page = 1) {
@@ -265,9 +281,11 @@ export default {
       if (isNew) {
         this.tempProduct = {};
         this.isNew = true;
+        this.modal_title = "新增產品";
       } else {
         this.tempProduct = Object.assign({}, item);
         this.isNew = false;
+        this.modal_title = "編輯產品";
       }
       $("#" + el).modal("show");
     },
