@@ -81,32 +81,32 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       form: {
         user: {}
       }
-    };
+    }
   },
   methods: {
-    createOrder() {
+    createOrder () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/order`;
-      const vm = this;
+      }/order`
+      const vm = this
       this.$validator.validate().then(result => {
         if (result) {
           this.$http.post(api, { data: vm.form }).then(response => {
-            console.log(response.data);
+            console.log(response.data)
             if (response.data.success) {
-              vm.$router.push(`/check_out_payment/${response.data.orderId}`);
+              vm.$router.push(`/check_out_payment/${response.data.orderId}`)
             }
-          });
+          })
         } else {
-          vm.$bus.$emit("message:push", "欄位不完整", "danger");
+          vm.$bus.$emit('message:push', '欄位不完整', 'danger')
         }
-      });
+      })
     }
   }
-};
+}
 </script>

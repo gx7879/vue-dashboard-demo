@@ -21,50 +21,50 @@
 
 <script>
 export default {
-  name: "Navbar",
-  data() {
+  name: 'Navbar',
+  data () {
     return {
       messages: []
-    };
+    }
   },
   methods: {
-    updateMessage(message, status) {
-      const timestamp = Math.floor(new Date() / 1000);
+    updateMessage (message, status) {
+      const timestamp = Math.floor(new Date() / 1000)
       this.messages.push({
         message,
         status,
         timestamp
-      });
-      this.removeMessageWithTiming(timestamp);
+      })
+      this.removeMessageWithTiming(timestamp)
     },
-    removeMessage(num) {
-      this.messages.splice(num, 1);
+    removeMessage (num) {
+      this.messages.splice(num, 1)
     },
-    removeMessageWithTiming(timestamp) {
-      const vm = this;
+    removeMessageWithTiming (timestamp) {
+      const vm = this
       setTimeout(() => {
         vm.messages.forEach((item, i) => {
           if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1);
+            vm.messages.splice(i, 1)
           }
-        });
-      }, 5000);
+        })
+      }, 5000)
     }
   },
-  created() {
-    const vm = this;
+  created () {
+    const vm = this
 
-    vm.$bus.$on("message:push", (message, status = "warning") => {
-      vm.updateMessage(message, status);
-    });
+    vm.$bus.$on('message:push', (message, status = 'warning') => {
+      vm.updateMessage(message, status)
+    })
 
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
 
-    // vm.$bus.$emit('message:push');
+    // vm.$bus.$emit('message:push')
   }
-};
+}
 </script>
 
 <style scope>

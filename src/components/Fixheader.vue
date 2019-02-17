@@ -90,21 +90,21 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
-    cart() {
-      return this.$store.state.cart;
+    cart () {
+      return this.$store.state.cart
     }
   },
   methods: {
-    removeCart(id) {
-      this.$store.dispatch("removeCart", id);
+    removeCart (id) {
+      this.$store.dispatch('removeCart', id)
     },
-    checkOutOrders() {
-      this.$router.push("/cart");
+    checkOutOrders () {
+      this.$router.push('/cart')
     }
   }
-};
+}
 </script>

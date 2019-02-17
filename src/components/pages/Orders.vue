@@ -38,49 +38,49 @@
 </template>
 
 <script>
-import Pagination from "../Pagination";
+import Pagination from '../Pagination'
 export default {
-  data() {
+  data () {
     return {
       orders: {},
       isLoading: false,
       pagination: {}
-    };
+    }
   },
   components: {
     Pagination
   },
   methods: {
-    getOrders(page = 1) {
+    getOrders (page = 1) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/orders?page=${page}`;
-      const vm = this;
-      vm.isLoading = true;
+      }/admin/orders?page=${page}`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.isLoading = false;
-        vm.orders = response.data.orders;
-        vm.pagination = response.data.pagination;
-      });
+        console.log(response.data)
+        vm.isLoading = false
+        vm.orders = response.data.orders
+        vm.pagination = response.data.pagination
+      })
     }
   },
   computed: {
-    sortOrder() {
-      const vm = this;
-      let newOrder = [];
+    sortOrder () {
+      const vm = this
+      let newOrder = []
       if (vm.orders.length) {
         newOrder = vm.orders.sort((a, b) => {
-          const aIsPaid = a.is_paid ? 1 : 0;
-          const bIsPaid = b.is_paid ? 1 : 0;
-          return aIsPaid - bIsPaid;
-        });
+          const aIsPaid = a.is_paid ? 1 : 0
+          const bIsPaid = b.is_paid ? 1 : 0
+          return aIsPaid - bIsPaid
+        })
       }
-      return newOrder;
+      return newOrder
     }
   },
-  created() {
-    this.getOrders();
+  created () {
+    this.getOrders()
   }
-};
+}
 </script>

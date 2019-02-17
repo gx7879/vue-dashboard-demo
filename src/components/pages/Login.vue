@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  data(){
+  data () {
     return {
       user: {
         username: '',
@@ -28,13 +28,13 @@ export default {
     }
   },
   methods: {
-    signin(){
-      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
-      const vm = this;
-      this.$http.post(api,vm.user).then((response)=>{
+    signin () {
+      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
+      const vm = this
+      this.$http.post(api, vm.user).then((response) => {
         console.log(response.data)
-        if(response.data.success){
-          vm.$router.push('/admin/products');
+        if (response.data.success) {
+          vm.$router.push('/admin/products')
         }
       })
     }

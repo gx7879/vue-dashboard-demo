@@ -208,138 +208,137 @@
   </div>
 </template>
 
-
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
       products: [],
       product: {},
       cart: {},
       form: {
         user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: ""
+          name: '',
+          email: '',
+          tel: '',
+          address: ''
         },
-        message: ""
+        message: ''
       },
       status: {
-        loadingItem: ""
+        loadingItem: ''
       },
       isLoading: false,
-      coupon_code: ""
-    };
+      coupon_code: ''
+    }
   },
   methods: {
-    getProducts() {
+    getProducts () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/products/all`;
-      const vm = this;
-      vm.isLoading = true;
+      }/products/all`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.products = response.data.products;
-        vm.isLoading = false;
-      });
+        console.log(response.data)
+        vm.products = response.data.products
+        vm.isLoading = false
+      })
     },
-    getProduct(id) {
+    getProduct (id) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/product/${id}`;
-      const vm = this;
-      vm.status.loadingItem = id;
+      }/product/${id}`
+      const vm = this
+      vm.status.loadingItem = id
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.product = response.data.product;
-        $("#productModal").modal("show");
-        vm.status.loadingItem = "";
-      });
+        console.log(response.data)
+        vm.product = response.data.product
+        $('#productModal').modal('show')
+        vm.status.loadingItem = ''
+      })
     },
-    addtoCart(id, qty = 1) {
+    addtoCart (id, qty = 1) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/cart`;
-      const vm = this;
+      }/cart`
+      const vm = this
       const cart = {
         product_id: id,
         qty
-      };
-      vm.status.loadingItem = id;
+      }
+      vm.status.loadingItem = id
       this.$http.post(api, { data: cart }).then(response => {
-        console.log(response.data);
-        vm.status.loadingItem = "";
-        vm.getCart();
-        $("#productModal").modal("hide");
-      });
+        console.log(response.data)
+        vm.status.loadingItem = ''
+        vm.getCart()
+        $('#productModal').modal('hide')
+      })
     },
-    getCart() {
+    getCart () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/cart`;
-      const vm = this;
+      }/cart`
+      const vm = this
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.cart = response.data.data;
-      });
+        console.log(response.data)
+        vm.cart = response.data.data
+      })
     },
-    removeCartItem(id) {
+    removeCartItem (id) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/cart/${id}`;
-      const vm = this;
-      vm.isLoading = true;
+      }/cart/${id}`
+      const vm = this
+      vm.isLoading = true
       this.$http.delete(api).then(response => {
-        console.log(response.data);
-        vm.getCart();
-        vm.isLoading = false;
-      });
+        console.log(response.data)
+        vm.getCart()
+        vm.isLoading = false
+      })
     },
-    addCouponCode() {
+    addCouponCode () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/coupon`;
-      const vm = this;
+      }/coupon`
+      const vm = this
       const coupon = {
         code: vm.coupon_code
-      };
+      }
       this.$http.post(api, { data: coupon }).then(response => {
-        console.log(response.data);
+        console.log(response.data)
         if (response.data.success) {
-          vm.getCart();
+          vm.getCart()
         } else {
-          vm.$bus.$emit("message:push", response.data.message, "danger");
+          vm.$bus.$emit('message:push', response.data.message, 'danger')
         }
-      });
+      })
     },
-    createOrder() {
+    createOrder () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/order`;
-      const vm = this;
+      }/order`
+      const vm = this
       this.$validator.validate().then(result => {
         if (result) {
           this.$http.post(api, { data: vm.form }).then(response => {
-            console.log(response.data);
+            console.log(response.data)
             if (response.data.success) {
               vm.$router.push(
                 `/simulation/customer_checkout/${response.data.orderId}`
-              );
+              )
             }
-          });
+          })
         } else {
-          vm.$bus.$emit("message:push", "欄位不完整", "danger");
+          vm.$bus.$emit('message:push', '欄位不完整', 'danger')
         }
-      });
+      })
     }
   },
-  created() {
-    this.getProducts();
-    this.getCart();
+  created () {
+    this.getProducts()
+    this.getCart()
   }
-};
+}
 </script>

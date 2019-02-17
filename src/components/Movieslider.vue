@@ -33,36 +33,40 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
-  props: ["imagesData"],
-  data() {
+  props: ['imagesData'],
+  data () {
     return {
       swiperOptionTop: {
         spaceBetween: 10,
         autoplay: true,
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev"
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
         }
       },
       swiperOptionThumbs: {
         spaceBetween: 10,
         centeredSlides: true,
-        slidesPerView: "auto",
+        slidesPerView: 'auto',
         touchRatio: 0.2,
         slideToClickedSlide: true
       }
-    };
+    }
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
-      const swiperTop = this.$refs.swiperTop.swiper;
-      const swiperThumbs = this.$refs.swiperThumbs.swiper;
-      swiperTop.controller.control = swiperThumbs;
-      swiperThumbs.controller.control = swiperTop;
-    });
+      const swiperTop = this.$refs.swiperTop.swiper
+      const swiperThumbs = this.$refs.swiperThumbs.swiper
+      swiperTop.controller.control = swiperThumbs
+      swiperThumbs.controller.control = swiperTop
+    })
+
+    let color = ['#DB4F38', '#1BB5FF', '#000']
+    $('.tag').css({ background: color[Math.floor(Math.random() * 3)] })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -92,7 +96,7 @@ export default {
 }
 .tag {
   background-color: #fff;
-  color: #000;
+  color: #fff;
   display: inline-block;
   padding: 0px 6px;
 }

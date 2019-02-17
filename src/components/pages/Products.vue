@@ -228,11 +228,11 @@
 </template>
 
 <script>
-import $ from "jquery";
-import Pagination from "../Pagination";
+import $ from 'jquery'
+import Pagination from '../Pagination'
 
 export default {
-  data() {
+  data () {
     return {
       products: [],
       pagination: {},
@@ -242,123 +242,123 @@ export default {
       status: {
         fileUploading: false
       },
-      modal_title: ""
-    };
+      modal_title: ''
+    }
   },
   components: {
     Pagination
   },
   computed: {
-    search_video() {
-      return this.$store.state.search_video;
+    search_video () {
+      return this.$store.state.search_video
     },
-    filter_product() {
-      const searchVal = this.$store.state.search_video;
+    filter_product () {
+      const searchVal = this.$store.state.search_video
       if (!searchVal) {
-        return this.products;
+        return this.products
       } else {
-        return this.products.filter(function(item) {
-          return item.title.indexOf(searchVal) > -1;
-        });
+        return this.products.filter(function (item) {
+          return item.title.indexOf(searchVal) > -1
+        })
       }
     }
   },
   methods: {
-    getProducts(page = 1) {
+    getProducts (page = 1) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/products?page=${page}`;
-      const vm = this;
-      vm.isLoading = true;
+      }/admin/products?page=${page}`
+      const vm = this
+      vm.isLoading = true
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.isLoading = false;
-        vm.products = response.data.products;
-        vm.pagination = response.data.pagination;
-      });
+        console.log(response.data)
+        vm.isLoading = false
+        vm.products = response.data.products
+        vm.pagination = response.data.pagination
+      })
     },
-    openModal(el, isNew, item) {
+    openModal (el, isNew, item) {
       if (isNew) {
-        this.tempProduct = {};
-        this.isNew = true;
-        this.modal_title = "新增產品";
+        this.tempProduct = {}
+        this.isNew = true
+        this.modal_title = '新增產品'
       } else {
-        this.tempProduct = Object.assign({}, item);
-        this.isNew = false;
-        this.modal_title = "編輯產品";
+        this.tempProduct = Object.assign({}, item)
+        this.isNew = false
+        this.modal_title = '編輯產品'
       }
-      $("#" + el).modal("show");
+      $('#' + el).modal('show')
     },
-    updateProduct() {
+    updateProduct () {
       let api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/product`;
-      let httpMethod = "post";
-      const vm = this;
-      const currentPage = vm.pagination.current_page;
+      }/admin/product`
+      let httpMethod = 'post'
+      const vm = this
+      const currentPage = vm.pagination.current_page
       if (!vm.isNew) {
         api = `${process.env.VUE_APP_APIPATH}/api/${
           process.env.VUE_APP_CUSTOMPATH
-        }/admin/product/${vm.tempProduct.id}`;
-        httpMethod = "put";
+        }/admin/product/${vm.tempProduct.id}`
+        httpMethod = 'put'
       }
       this.$http[httpMethod](api, { data: vm.tempProduct }).then(response => {
         if (response.data.success) {
-          $("#productModal").modal("hide");
-          vm.getProducts(currentPage);
+          $('#productModal').modal('hide')
+          vm.getProducts(currentPage)
         } else {
-          $("#productModal").modal("hide");
-          vm.getProducts(currentPage);
-          console.log("新增失敗");
+          $('#productModal').modal('hide')
+          vm.getProducts(currentPage)
+          console.log('新增失敗')
         }
-      });
+      })
     },
-    uploadFile() {
-      console.log(this);
-      const uploadedFile = this.$refs.files.files[0];
-      const vm = this;
-      const formData = new FormData();
-      formData.append("file-to-upload", uploadedFile);
+    uploadFile () {
+      console.log(this)
+      const uploadedFile = this.$refs.files.files[0]
+      const vm = this
+      const formData = new FormData()
+      formData.append('file-to-upload', uploadedFile)
       const url = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/upload`;
-      vm.status.fileUploading = true;
+      }/admin/upload`
+      vm.status.fileUploading = true
       this.$http
         .post(url, formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
+            'Content-Type': 'multipart/form-data'
           }
         })
         .then(response => {
-          console.log(response.data);
-          vm.status.fileUploading = false;
+          console.log(response.data)
+          vm.status.fileUploading = false
           if (response.data.success) {
-            vm.$set(vm.tempProduct, "imageUrl", response.data.imageUrl);
+            vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl)
           } else {
-            vm.$bus.$emit("message:push", response.data.message, "danger");
+            vm.$bus.$emit('message:push', response.data.message, 'danger')
           }
-        });
+        })
     },
-    deleteData() {
+    deleteData () {
       let url = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/product/${this.tempProduct.id}`;
-      const vm = this;
+      }/admin/product/${this.tempProduct.id}`
+      const vm = this
       this.$http.delete(url).then(response => {
-        console.log(response.data);
+        console.log(response.data)
         if (response.data.success) {
-          $("#delProductModal").modal("hide");
-          vm.getProducts();
+          $('#delProductModal').modal('hide')
+          vm.getProducts()
         } else {
-          $("#delProductModal").modal("hide");
-          vm.getProducts();
-          console.log(response.data.message);
+          $('#delProductModal').modal('hide')
+          vm.getProducts()
+          console.log(response.data.message)
         }
-      });
+      })
     }
   },
-  created() {
-    this.getProducts();
+  created () {
+    this.getProducts()
   }
-};
+}
 </script>

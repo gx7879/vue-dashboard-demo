@@ -39,25 +39,25 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 export default {
   methods: {
-    addtoCart(itemId, qty = 1) {
-      this.$store.dispatch("addtoCart", { itemId, qty });
+    addtoCart (itemId, qty = 1) {
+      this.$store.dispatch('addtoCart', { itemId, qty })
     },
-    movieInfo(id) {
-      this.$router.push(`/movieinfo/${id}`);
+    movieInfo (id) {
+      this.$router.push(`/movieinfo/${id}`)
     },
-    ...mapActions("productsModules", ["getProducts"])
+    ...mapActions('productsModules', ['getProducts'])
   },
   computed: {
-    favoriteData() {
-      return this.$store.state.attentionData;
+    favoriteData () {
+      return this.$store.state.attentionData
     },
-    ...mapGetters("productsModules", ["products", "categories"])
+    ...mapGetters('productsModules', ['products', 'categories'])
   },
-  created() {
-    this.getProducts();
+  created () {
+    this.getProducts()
   }
-};
+}
 </script>

@@ -142,10 +142,10 @@
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 
 export default {
-  data() {
+  data () {
     return {
       coupons: {},
       tempCoupon: {
@@ -153,80 +153,80 @@ export default {
       },
       due_date: new Date(),
       isNew: false,
-      modal_title: ""
-    };
+      modal_title: ''
+    }
   },
   watch: {
-    due_date() {
-      const vm = this;
-      const timestamp = Math.floor(new Date(vm.due_date) / 1000);
-      console.log(timestamp);
-      vm.tempCoupon.due_date = timestamp;
+    due_date () {
+      const vm = this
+      const timestamp = Math.floor(new Date(vm.due_date) / 1000)
+      console.log(timestamp)
+      vm.tempCoupon.due_date = timestamp
     }
   },
   methods: {
-    getCoupons(page = 1) {
+    getCoupons (page = 1) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/coupons?page=${page}`;
-      const vm = this;
+      }/admin/coupons?page=${page}`
+      const vm = this
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.coupons = response.data.coupons;
-      });
+        console.log(response.data)
+        vm.coupons = response.data.coupons
+      })
     },
-    openCouponModal(el, isNew, item) {
-      const vm = this;
+    openCouponModal (el, isNew, item) {
+      const vm = this
       if (isNew) {
-        vm.isNew = true;
-        vm.tempCoupon = {};
-        vm.modal_title = "新增內容";
+        vm.isNew = true
+        vm.tempCoupon = {}
+        vm.modal_title = '新增內容'
       } else {
-        vm.isNew = false;
-        vm.tempCoupon = Object.assign({}, item);
+        vm.isNew = false
+        vm.tempCoupon = Object.assign({}, item)
         const dateAndTime = new Date(vm.tempCoupon.due_date * 1000)
           .toISOString()
-          .split("T");
-        vm.due_date = dateAndTime[0];
-        vm.modal_title = "編輯內容";
+          .split('T')
+        vm.due_date = dateAndTime[0]
+        vm.modal_title = '編輯內容'
       }
-      $(`#${el}`).modal("show");
+      $(`#${el}`).modal('show')
     },
-    updateCoupon() {
+    updateCoupon () {
       let api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/coupon`;
-      const vm = this;
-      let httpMethod = "post";
+      }/admin/coupon`
+      const vm = this
+      let httpMethod = 'post'
       if (!vm.isNew) {
-        httpMethod = "put";
+        httpMethod = 'put'
         api = `${process.env.VUE_APP_APIPATH}/api/${
           process.env.VUE_APP_CUSTOMPATH
-        }/admin/coupon/${vm.tempCoupon.id}`;
+        }/admin/coupon/${vm.tempCoupon.id}`
       }
-      console.log(vm.tempCoupon.due_date);
-      vm.due_date = new Date(vm.tempCoupon.due_date * 1000);
-      console.log(vm.tempCoupon.due_date);
+      console.log(vm.tempCoupon.due_date)
+      vm.due_date = new Date(vm.tempCoupon.due_date * 1000)
+      console.log(vm.tempCoupon.due_date)
       this.$http[httpMethod](api, { data: vm.tempCoupon }).then(response => {
-        console.log(response.data);
-        $("#couponModal").modal("hide");
-        vm.getCoupons();
-      });
+        console.log(response.data)
+        $('#couponModal').modal('hide')
+        vm.getCoupons()
+      })
     },
-    deleteCoupon() {
+    deleteCoupon () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/admin/coupon/${this.tempCoupon.id}`;
-      const vm = this;
+      }/admin/coupon/${this.tempCoupon.id}`
+      const vm = this
       this.$http.delete(api).then(response => {
-        console.log(response.data);
-        $("#delCouponModal").modal("hide");
-        vm.getCoupons();
-      });
+        console.log(response.data)
+        $('#delCouponModal').modal('hide')
+        vm.getCoupons()
+      })
     }
   },
-  created() {
-    this.getCoupons();
+  created () {
+    this.getCoupons()
   }
-};
+}
 </script>

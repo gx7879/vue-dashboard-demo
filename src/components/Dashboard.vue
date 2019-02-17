@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
-import Alert from "./Alertmessage";
+import Sidebar from './Sidebar'
+import Navbar from './Navbar'
+import Alert from './Alertmessage'
 
 export default {
   components: {
@@ -24,5 +24,5 @@ export default {
     Navbar,
     Alert
   }
-};
+}
 </script>

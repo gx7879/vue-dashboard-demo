@@ -37,11 +37,11 @@
 
 <script>
 export default {
-  props: ["pages"],
+  props: ['pages'],
   methods: {
-    updatePage(page) {
-      this.$emit("page-event", page);
+    updatePage (page) {
+      this.$emit('page-event', page)
     }
   }
-};
+}
 </script>

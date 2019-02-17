@@ -60,48 +60,48 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       order: {
         // user: {}
       },
-      orderId: ""
-    };
-  },
-  methods: {
-    getOrder() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${
-        process.env.VUE_APP_CUSTOMPATH
-      }/order/${this.orderId}`;
-      const vm = this;
-      this.$store.dispatch("updateLoading", true);
-      this.$http.get(api).then(response => {
-        console.log(response);
-        if (response.data.success) {
-          vm.order = response.data.order;
-          vm.$store.dispatch("updateLoading", false);
-        }
-      });
-    },
-    payOrder() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${
-        process.env.VUE_APP_CUSTOMPATH
-      }/pay/${this.orderId}`;
-      const vm = this;
-      vm.isLoading = true;
-      this.$http.post(api).then(response => {
-        console.log(response.data);
-        vm.isLoading = false;
-        if (response.data.success) {
-          vm.getOrder();
-          vm.$bus.$emit("message:push", response.data.message, "success");
-        }
-      });
+      orderId: ''
     }
   },
-  created() {
-    this.orderId = this.$route.params.orderId;
-    this.getOrder();
+  methods: {
+    getOrder () {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${
+        process.env.VUE_APP_CUSTOMPATH
+      }/order/${this.orderId}`
+      const vm = this
+      this.$store.dispatch('updateLoading', true)
+      this.$http.get(api).then(response => {
+        console.log(response)
+        if (response.data.success) {
+          vm.order = response.data.order
+          vm.$store.dispatch('updateLoading', false)
+        }
+      })
+    },
+    payOrder () {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${
+        process.env.VUE_APP_CUSTOMPATH
+      }/pay/${this.orderId}`
+      const vm = this
+      vm.isLoading = true
+      this.$http.post(api).then(response => {
+        console.log(response.data)
+        vm.isLoading = false
+        if (response.data.success) {
+          vm.getOrder()
+          vm.$bus.$emit('message:push', response.data.message, 'success')
+        }
+      })
+    }
+  },
+  created () {
+    this.orderId = this.$route.params.orderId
+    this.getOrder()
   }
-};
+}
 </script>

@@ -15,29 +15,29 @@ export default new Vuex.Store({
     attentionArr: [],
     attentionData: [],
     status: {
-      loadingItem: ""
+      loadingItem: ''
     },
     search_video: ''
   },
   mutations: {
     // payload
-    LOADING(state, status) {
-      state.isLoading = status;
+    LOADING (state, status) {
+      state.isLoading = status
     },
-    CART(state, payload) {
+    CART (state, payload) {
       state.cart = payload
     },
-    ATTENTION(state, payload) {
-      state.productsModules.products[payload.movieIndex].attention = payload.boolean;
+    ATTENTION (state, payload) {
+      state.productsModules.products[payload.movieIndex].attention = payload.boolean
     },
-    ATTENTIONARR(state, payload) {
+    ATTENTIONARR (state, payload) {
       if (payload.isNew) {
         state.attentionArr = payload.attentionItem
       } else {
         if (state.attentionArr.indexOf(payload.movieId) > -1) {
           console.log(state.attentionArr)
           let movieIdIdx = state.attentionArr.findIndex(function (item) {
-            return item == payload.movieId
+            return item === payload.movieId
           })
           console.log(movieIdIdx)
           state.attentionArr.splice(movieIdIdx, 1)
@@ -48,65 +48,65 @@ export default new Vuex.Store({
         }
       }
     },
-    ATTENTIONDATA(state, payload) {
+    ATTENTIONDATA (state, payload) {
       state.attentionData = payload
     },
-    LOADINGITEM(state, payload) {
+    LOADINGITEM (state, payload) {
       state.status.loadingItem = payload
     },
-    UPDATEVALUE(state, payload) {
+    UPDATEVALUE (state, payload) {
       state.search_video = payload
     }
   },
   actions: {
-    updateLoading(context, status) {
+    updateLoading (context, status) {
       context.commit('LOADING', status)
     },
-    getCart(context) {
+    getCart (context) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/cart`;
+      }/cart`
       context.commit('LOADING', true)
       axios.get(api).then(response => {
-        console.log(response.data);
+        console.log(response.data)
         if (response.data.data.carts) {
-          context.commit('CART', response.data.data);
+          context.commit('CART', response.data.data)
         }
         context.commit('LOADING', false)
-      });
+      })
     },
-    removeCart(context, id) {
+    removeCart (context, id) {
       const url = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/cart/${id}`;
+      }/cart/${id}`
       context.commit('LOADING', true)
       axios.delete(url).then(response => {
         context.dispatch('getCart')
-        console.log("刪除購物車項目", response);
+        console.log('刪除購物車項目', response)
         context.commit('LOADING', false)
-      });
+      })
     },
-    addtoCart(context, {
+    addtoCart (context, {
       itemId,
       qty
     }) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/cart`;
+      }/cart`
       context.commit('LOADINGITEM', itemId)
       const cartItem = {
         product_id: itemId,
         qty
-      };
+      }
       axios.post(api, {
         data: cartItem
       }).then(response => {
-        console.log(response.data);
+        console.log(response.data)
         context.dispatch('getCart')
         context.commit('LOADINGITEM', '')
-      });
+      })
     },
-    addAttention(context, {
+    addAttention (context, {
       movieId,
       movieIndex,
       boolean
@@ -120,7 +120,7 @@ export default new Vuex.Store({
         boolean
       })
     },
-    attentionData(context, itemData) {
+    attentionData (context, itemData) {
       let attentionData = itemData.filter(function (item) {
         return context.state.attentionArr.indexOf(item.id) > -1
       })

@@ -23,28 +23,28 @@
 export default {
   computed: {
     search_video: {
-      get() {
-        return this.$store.state.search_video;
+      get () {
+        return this.$store.state.search_video
       },
-      set(value) {
-        this.$store.commit("UPDATEVALUE", value);
+      set (value) {
+        this.$store.commit('UPDATEVALUE', value)
       }
     },
-    routeName() {
-      return this.$route.name == "Product";
+    routeName () {
+      return this.$route.name === 'Product'
     }
   },
   methods: {
-    signout() {
-      const api = `${process.env.VUE_APP_APIPATH}/logout`;
-      const vm = this;
+    signout () {
+      const api = `${process.env.VUE_APP_APIPATH}/logout`
+      const vm = this
       this.$http.post(api).then(response => {
-        console.log(response.data);
+        console.log(response.data)
         if (response.data.success) {
-          vm.$router.push("/login");
+          vm.$router.push('/login')
         }
-      });
+      })
     }
   }
-};
+}
 </script>

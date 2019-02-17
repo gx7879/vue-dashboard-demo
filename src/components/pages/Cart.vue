@@ -59,43 +59,42 @@
 import Checkout from '@/components/pages/Checkout'
 import Checkinfo from '@/components/pages/Checkinfo'
 export default {
-  data(){
-    return{
+  data () {
+    return {
       cartStatus: 'Checkout',
-      coupon_code: ""
+      coupon_code: ''
     }
   },
-  computed:{
-    cart() {
-      return this.$store.state.cart;
+  computed: {
+    cart () {
+      return this.$store.state.cart
     }
   },
-  methods:{
-    addCouponCode() {
+  methods: {
+    addCouponCode () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/coupon`;
-      const vm = this;
+      }/coupon`
+      const vm = this
       const coupon = {
         code: vm.coupon_code
-      };
+      }
       this.$http.post(api, { data: coupon }).then(response => {
-        console.log(response.data);
+        console.log(response.data)
         if (response.data.success) {
-          vm.getCart();
+          vm.getCart()
         } else {
-          vm.$bus.$emit("message:push", response.data.message, "danger");
+          vm.$bus.$emit('message:push', response.data.message, 'danger')
         }
-      });
+      })
     },
-    getCart() {
-      this.$store.dispatch("getCart");
+    getCart () {
+      this.$store.dispatch('getCart')
     }
   },
-  components:{
+  components: {
     Checkout,
     Checkinfo
   }
-};
+}
 </script>
-

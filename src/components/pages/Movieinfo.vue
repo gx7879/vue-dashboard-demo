@@ -40,75 +40,71 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
-      movieId: "",
+      movieId: '',
       movie: {},
       movieIndex: 0
-    };
+    }
   },
   methods: {
-    getMovieInfo() {
+    getMovieInfo () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
         process.env.VUE_APP_CUSTOMPATH
-      }/product/${this.movieId}`;
-      const vm = this;
-      vm.$store.dispatch("updateLoading", true);
+      }/product/${this.movieId}`
+      const vm = this
+      vm.$store.dispatch('updateLoading', true)
       this.$http.get(api).then(response => {
-        console.log(response.data);
-        vm.movie = response.data.product;
-        vm.$store.dispatch("updateLoading", false);
-      });
+        console.log(response.data)
+        vm.movie = response.data.product
+        vm.$store.dispatch('updateLoading', false)
+      })
     },
-    addtoCart(itemId, qty = 1) {
-      this.$store.dispatch("addtoCart", { itemId, qty });
+    addtoCart (itemId, qty = 1) {
+      this.$store.dispatch('addtoCart', { itemId, qty })
     },
-    addAttention() {
-      const vm = this;
-      let movieIndex = 0;
-      let movieId = vm.movieId;
+    addAttention () {
+      const vm = this
+      let movieIndex = 0
+      let movieId = vm.movieId
       vm.movieIndex = this.$store.state.productsModules.products.findIndex(
-        function(item) {
-          return item.id == vm.movieId;
+        function (item) {
+          return item.id === vm.movieId
         }
-      );
-      let boolean = false;
-      const currentItem = this.$store.state.productsModules.products[
-        vm.movieIndex
-      ];
+      )
+      let boolean = false
+      const currentItem = this.$store.state.productsModules.products[vm.movieIndex]
       if (currentItem.attention) {
-        boolean = false;
-        movieIndex = vm.movieIndex;
-        this.$store.dispatch("addAttention", { movieId, movieIndex, boolean });
+        boolean = false
+        movieIndex = vm.movieIndex
+        this.$store.dispatch('addAttention', { movieId, movieIndex, boolean })
       } else {
-        boolean = true;
-        movieIndex = vm.movieIndex;
-        this.$store.dispatch("addAttention", { movieId, movieIndex, boolean });
+        boolean = true
+        movieIndex = vm.movieIndex
+        this.$store.dispatch('addAttention', { movieId, movieIndex, boolean })
       }
     },
-    ...mapActions("productsModules", ["getProducts"])
+    ...mapActions('productsModules', ['getProducts'])
   },
   computed: {
-    isLoading() {
-      return this.$store.state.isLoading;
+    isLoading () {
+      return this.$store.state.isLoading
     },
-    isAttention() {
+    isAttention () {
       if (this.$store.state.productsModules.products.length) {
-        return this.$store.state.productsModules.products[this.movieIndex]
-          .attention;
+        return this.$store.state.productsModules.products[this.movieIndex].attention
+      } else {
+        return ''
       }
     },
-    ...mapGetters("productsModules", ["products", "categories"])
+    ...mapGetters('productsModules', ['products', 'categories'])
   },
-  created() {
-    this.movieId = this.$route.params.movieId;
-    this.getMovieInfo();
-    this.getProducts();
+  created () {
+    this.movieId = this.$route.params.movieId
+    this.getMovieInfo()
+    this.getProducts()
   }
-};
+}
 </script>
-
-<style lang="scss">
-</style>

@@ -45,17 +45,16 @@
 <script>
 export default {
   computed: {
-    cart() {
-      return this.$store.state.cart;
+    cart () {
+      return this.$store.state.cart
     }
   },
   methods: {
-    removeCart(id) {
-      this.$store.dispatch("removeCart", id);
-    },
-    
+    removeCart (id) {
+      this.$store.dispatch('removeCart', id)
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
