@@ -63,7 +63,7 @@ export default {
       })
     },
     addtoCart (itemId, qty = 1) {
-      this.$store.dispatch('addtoCart', { itemId, qty })
+      this.$store.dispatch('cartsModules/addtoCart', { itemId, qty })
     },
     addAttention () {
       const vm = this
