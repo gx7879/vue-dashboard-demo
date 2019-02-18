@@ -90,17 +90,14 @@
 
 <script>
 export default {
-  data () {
-    return {}
-  },
   computed: {
     cart () {
-      return this.$store.state.cart
+      return this.$store.state.cartsModules.cart
     }
   },
   methods: {
     removeCart (id) {
-      this.$store.dispatch('removeCart', id)
+      this.$store.dispatch('cartsModules/removeCart', id)
     },
     checkOutOrders () {
       this.$router.push('/cart')

@@ -34,7 +34,7 @@
           <div class="col-md-2">{{ item.qty }} / {{ item.product.unit }}</div>
           <div class="col-md-2" v-if="!item.coupon">{{ item.product.price | currency }}</div>
           <div class="col-md-2" v-else>{{ item.final_total | currency }}</div>
-          <div class="col-md-1" @click="removeCart(item.id)">
+          <div class="col-md-1 cursor-pointer" @click="removeCart(item.id)">
             <i class="far fa-trash-alt"></i>
           </div>
         </div>
@@ -46,12 +46,17 @@
 export default {
   computed: {
     cart () {
-      return this.$store.state.cart
+      return this.$store.state.cartsModules.cart
     }
   },
   methods: {
     removeCart (id) {
-      this.$store.dispatch('removeCart', id)
+      this.$store.dispatch('cartsModules/removeCart', id).then((response) => {
+        console.log(response)
+        if(!response.data.data.carts.length){
+          this.$router.push('/')
+        }
+      })
     }
   }
 }
@@ -60,5 +65,8 @@ export default {
 <style lang="scss" scoped>
 .cart-item-img {
   max-width: 80px;
+}
+.cursor-pointer{
+  cursor: pointer;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-110 text-white">
+  <div class="mt-110 text-white container">
     <div class="my-5 row justify-content-center">
       <form class="col-md-6" @submit.prevent="payOrder">
         <table class="table">
@@ -94,6 +94,7 @@ export default {
         vm.isLoading = false
         if (response.data.success) {
           vm.getOrder()
+          vm.$store.dispatch('getCart')
           vm.$bus.$emit('message:push', response.data.message, 'success')
         }
       })

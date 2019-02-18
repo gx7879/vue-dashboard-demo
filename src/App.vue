@@ -24,14 +24,14 @@
 </template>
 
 <script>
+import { mapActions,mapGetters } from 'vuex'
+
 export default {
   data() {
     return {};
   },
   methods: {
-    getCart() {
-      this.$store.dispatch("getCart");
-    }
+    ...mapActions('cartsModules',['getCart'])
   },
   computed: {
     isLoading() {

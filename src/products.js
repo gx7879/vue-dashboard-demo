@@ -3,13 +3,13 @@ export default {
   namespaced: true,
   state: {
     products: [],
-    categories: [],
+    categories: []
   },
   actions: {
-    getProducts(context) {
+    getProducts (context) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${
-          process.env.VUE_APP_CUSTOMPATH
-        }/products/all`;
+        process.env.VUE_APP_CUSTOMPATH
+      }/products/all`
       context.commit('LOADING', true, {
         root: true
       })
@@ -24,15 +24,15 @@ export default {
           })
           response.data.products.forEach(function (item) {
             if (attentionItem.indexOf(item.id) > -1) {
-              item.attention = true;
+              item.attention = true
             } else {
-              item.attention = false;
+              item.attention = false
             }
-          });
+          })
         } else {
           response.data.products.forEach(function (item) {
-            item.attention = false;
-          });
+            item.attention = false
+          })
         }
         context.commit('PRODUCTS', response.data.products)
         context.commit('CATEGORIES', response.data.products)
@@ -42,28 +42,28 @@ export default {
         context.commit('LOADING', false, {
           root: true
         })
-      });
-    },
+      })
+    }
   },
   mutations: {
-    PRODUCTS(state, payload) {
+    PRODUCTS (state, payload) {
       state.products = payload
     },
-    CATEGORIES(state, payload) {
-      const categories = new Set();
+    CATEGORIES (state, payload) {
+      const categories = new Set()
       payload.forEach(item => {
-        categories.add(item.category);
-      });
+        categories.add(item.category)
+      })
       // vm.categories = Array.from(categories);
-      state.categories = [...categories];
-    },
+      state.categories = [...categories]
+    }
   },
   getters: {
-    products(state) {
-      return state.products;
+    products (state) {
+      return state.products
     },
-    categories(state) {
-      return state.categories;
+    categories (state) {
+      return state.categories
     }
   }
 }

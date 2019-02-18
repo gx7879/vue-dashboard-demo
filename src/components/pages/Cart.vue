@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     cart () {
-      return this.$store.state.cart
+      return this.$store.state.cartsModules.cart
     }
   },
   methods: {
@@ -89,7 +89,7 @@ export default {
       })
     },
     getCart () {
-      this.$store.dispatch('getCart')
+      this.$store.dispatch('cartsModules/getCart')
     }
   },
   components: {

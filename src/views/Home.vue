@@ -162,14 +162,12 @@ export default {
       }
       return vm.products
     },
-    status () {
-      return this.$store.state.status
-    },
+    ...mapGetters('cartsModules',['status']),
     ...mapGetters('productsModules', ['products', 'categories'])
   },
   methods: {
     addtoCart (itemId, qty = 1) {
-      this.$store.dispatch('addtoCart', { itemId, qty })
+      this.$store.dispatch('cartsModules/addtoCart', { itemId, qty })
     },
     movieInfo (id) {
       this.$router.push(`/movieinfo/${id}`)
