@@ -94,7 +94,7 @@ export default {
         vm.isLoading = false
         if (response.data.success) {
           vm.getOrder()
-          vm.$store.dispatch('getCart')
+          vm.$store.dispatch('cartsModules/getCart')
           vm.$bus.$emit('message:push', response.data.message, 'success')
         }
       })
