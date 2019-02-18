@@ -41,7 +41,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
-  data (){
+  data () {
     return {
       movieId: 0,
       movieIndex: 0
@@ -74,7 +74,6 @@ export default {
         movieIndex = vm.movieIndex
         this.$store.dispatch('addAttention', { movieId, movieIndex, boolean })
       }
-      console.log(movieId,movieIndex,boolean)
     },
     ...mapActions('productsModules', ['getProducts'])
   },
