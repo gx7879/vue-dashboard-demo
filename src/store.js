@@ -22,21 +22,23 @@ export default new Vuex.Store({
       state.productsModules.products[payload.movieIndex].attention = payload.boolean
     },
     ATTENTIONARR (state, payload) {
+      let products = state.productsModules.products
       if (payload.isNew) {
         state.attentionArr = payload.attentionItem
       } else {
         if (state.attentionArr.indexOf(payload.movieId) > -1) {
-          console.log(state.attentionArr)
           let movieIdIdx = state.attentionArr.findIndex(function (item) {
             return item === payload.movieId
           })
-          console.log(movieIdIdx)
           state.attentionArr.splice(movieIdIdx, 1)
           localStorage.setItem('attention', JSON.stringify(state.attentionArr))
         } else {
           state.attentionArr.push(payload.movieId)
           localStorage.setItem('attention', JSON.stringify(state.attentionArr))
         }
+        state.attentionData = products.filter(function (item) {
+          return state.attentionArr.indexOf(item.id) > -1
+        })
       }
     },
     ATTENTIONDATA (state, payload) {
@@ -50,19 +52,9 @@ export default new Vuex.Store({
     updateLoading (context, status) {
       context.commit('LOADING', status)
     },
-    addAttention (context, {
-      movieId,
-      movieIndex,
-      boolean
-    }) {
-      context.commit('ATTENTIONARR', {
-        movieId,
-        isNew: false
-      })
-      context.commit('ATTENTION', {
-        movieIndex,
-        boolean
-      })
+    addAttention (context, { movieId, movieIndex, boolean }) {
+      context.commit('ATTENTIONARR', { movieId, isNew: false })
+      context.commit('ATTENTION', { movieIndex, boolean })
     },
     attentionData (context, itemData) {
       let attentionData = itemData.filter(function (item) {

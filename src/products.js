@@ -16,12 +16,7 @@ export default {
       axios.get(api).then(response => {
         if (localStorage.getItem('attention')) {
           const attentionItem = JSON.parse(localStorage.getItem('attention'))
-          context.commit('ATTENTIONARR', {
-            attentionItem,
-            isNew: true
-          }, {
-            root: true
-          })
+          context.commit('ATTENTIONARR', { attentionItem, isNew: true }, { root: true })
           response.data.products.forEach(function (item) {
             if (attentionItem.indexOf(item.id) > -1) {
               item.attention = true
@@ -36,12 +31,8 @@ export default {
         }
         context.commit('PRODUCTS', response.data.products)
         context.commit('CATEGORIES', response.data.products)
-        context.dispatch('attentionData', response.data.products, {
-          root: true
-        })
-        context.commit('LOADING', false, {
-          root: true
-        })
+        context.dispatch('attentionData', response.data.products, { root: true })
+        context.commit('LOADING', false, { root: true })
       })
     }
   },

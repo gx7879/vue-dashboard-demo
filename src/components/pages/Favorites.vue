@@ -41,12 +41,40 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 export default {
+  data (){
+    return {
+      movieId: 0,
+      movieIndex: 0
+    }
+  },
   methods: {
     addtoCart (itemId, qty = 1) {
       this.$store.dispatch('addtoCart', { itemId, qty })
     },
     movieInfo (id) {
       this.$router.push(`/movieinfo/${id}`)
+    },
+    addAttention (movieId) {
+      const vm = this
+      let movieIndex = 0
+      vm.movieId = movieId
+      vm.movieIndex = this.$store.state.productsModules.products.findIndex(
+        function (item) {
+          return item.id === vm.movieId
+        }
+      )
+      let boolean = false
+      const currentItem = this.$store.state.productsModules.products[vm.movieIndex]
+      if (currentItem.attention) {
+        boolean = false
+        movieIndex = vm.movieIndex
+        this.$store.dispatch('addAttention', { movieId, movieIndex, boolean })
+      } else {
+        boolean = true
+        movieIndex = vm.movieIndex
+        this.$store.dispatch('addAttention', { movieId, movieIndex, boolean })
+      }
+      console.log(movieId,movieIndex,boolean)
     },
     ...mapActions('productsModules', ['getProducts'])
   },
