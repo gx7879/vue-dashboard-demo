@@ -56,38 +56,7 @@
           <div class="tab-pane" id="list-gift">
             <div class="row align-items-stretch">
               <!-- 禮品 -->
-              <div class="col-md-4 mb-4" v-for="(item) in filterData" :key="item.id">
-                <div class="card border-0 box-shadow text-center h-100">
-                  <div class="ribbon ribbon-info">{{ item.category }}</div>
-                  <img class="card-img-top" :src="item.imageUrl" alt="Card image cap">
-                  <div class="card-body bg-dark">
-                    <div class="d-flex">
-                      <h4 class="card-title text-light">{{ item.title }}</h4>
-                      <div class="heart ml-auto" @click="addAttention(item.id)">
-                        <i
-                          class="fa-heart fa-lg text-white"
-                          :class="{ 'fas': item.attention, 'far': !item.attention, 'text-danger': item.attention }"
-                        ></i>
-                      </div>
-                    </div>
-                    <p class="card-text text-left">{{ item.content }}</p>
-                  </div>
-                  <div class="card-footer bg-dark d-lg-flex border-white">
-                    <button
-                      href="#"
-                      class="btn btn-outline-light btn-sm infoBtn"
-                      @click.prevent="movieInfo(item.id)"
-                    >查看內容</button>
-                    <button
-                      class="btn btn-outline-light btn-sm ml-auto infoBtn"
-                      @click="addtoCart(item.id)"
-                    >
-                      <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
-                      <i class="fa fa-cart-plus" aria-hidden="true"></i> 加到購物車
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <div is='Card' class="col-md-4 mb-4" v-for="(item) in filterData" :key="item.id" :info='item' @add-attention='addAttention'></div>
             </div>
           </div>
         </div>
@@ -99,6 +68,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Slider from '@/components/Movieslider'
+import Card from '@/components/Cards'
 
 export default {
   name: 'home',
@@ -162,16 +132,9 @@ export default {
       }
       return vm.products
     },
-    ...mapGetters('cartsModules',['status']),
     ...mapGetters('productsModules', ['products', 'categories'])
   },
   methods: {
-    addtoCart (itemId, qty = 1) {
-      this.$store.dispatch('cartsModules/addtoCart', { itemId, qty })
-    },
-    movieInfo (id) {
-      this.$router.push(`/movieinfo/${id}`)
-    },
     addAttention (movieId) {
       const vm = this
       let movieIndex = 0
@@ -205,7 +168,8 @@ export default {
     this.getProducts()
   },
   components: {
-    Slider
+    Slider,
+    Card
   }
 }
 </script>

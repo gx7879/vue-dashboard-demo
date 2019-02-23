@@ -3,7 +3,7 @@
     <div class="container text-white mt-110 overflow-hidden">
       <h1 class="mt-5">收藏清單</h1>
       <div class="row my-4">
-        <div class="col-md-3 mb-4" v-for="(item) in favoriteData" :key="item.id">
+        <!-- <div class="col-md-3 mb-4" v-for="(item) in favoriteData" :key="item.id">
           <div class="card border-0 box-shadow text-center h-100">
             <img class="card-img-top" :src="item.imageUrl" alt="Card image cap">
             <div class="card-body bg-dark">
@@ -32,7 +32,8 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
+        <div is='Card' class="col-md-3 mb-4" v-for="(item) in favoriteData" :key="item.id" :info='item' @add-attention='addAttention'></div>
       </div>
     </div>
   </div>
@@ -40,6 +41,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Card from '@/components/Cards'
 export default {
   data () {
     return {
@@ -47,13 +49,10 @@ export default {
       movieIndex: 0
     }
   },
+  components: {
+    Card
+  },
   methods: {
-    addtoCart (itemId, qty = 1) {
-      this.$store.dispatch('addtoCart', { itemId, qty })
-    },
-    movieInfo (id) {
-      this.$router.push(`/movieinfo/${id}`)
-    },
     addAttention (movieId) {
       const vm = this
       let movieIndex = 0
