@@ -48,7 +48,7 @@ export default {
       this.$router.push(`/movieinfo/${id}`)
     },
     addAttention (id) {
-        this.$emit('add-attention', id)
+      this.$emit('add-attention', id)
     }
   }
 }
