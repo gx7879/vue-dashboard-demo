@@ -6,7 +6,7 @@
     <footer class="text-muted py-3">
       <div class="container">
         <ul class="list-inline text-center m-0">
-          <li class="list-inline-item align-middle">© Copright 2019 黃昏電影院 純屬練習作品</li>
+          <li class="list-inline-item align-middle">© Copright 2019 週末電影院 純屬練習作品</li>
           <li class="list-inline-item align-middle">
             <a class="text-info" href="#">
               <i class="fab fa-instagram fa-2x"></i>
