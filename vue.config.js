@@ -1,9 +1,3 @@
 module.exports = {
-  baseUrl: '/vue-dashboard-demo/dist/',
-  outputDir: undefined,
-  assetsDir: undefined,
-  runtimeCompiler: undefined,
-  productionSourceMap: undefined,
-  parallel: undefined,
-  css: undefined
+  publicPath: '/vue-dashboard-demo/dist/'
 }
